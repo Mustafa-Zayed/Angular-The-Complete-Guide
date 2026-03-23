@@ -1,19 +1,9 @@
 import { Component, computed, EventEmitter, input, Input, output, Output, signal } from '@angular/core';
 import { DUMMY_USERS } from './dummy-users';
+import { type UserInput } from './user.model';
 
 // const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
 
-// type UserInput = {
-//   id: string;
-//   avatar: string;
-//   name: string;
-// };
-
-interface UserInput {
-  id: string;
-  avatar: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-user',
@@ -47,6 +37,8 @@ export class User {
   // }
 
   // imagePath = computed(() => `assets/users/${this.selectedUser().avatar}`);
+
+  activeUser = input.required<boolean>();
 
   onSelectUser() {
     // const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
