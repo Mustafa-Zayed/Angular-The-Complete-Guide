@@ -1,12 +1,9 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
-import { Header } from './componnets/header/header';
-import { User } from './componnets/user/user';
+import { Component, signal } from '@angular/core';
 import { DUMMY_USERS } from './componnets/user/dummy-users';
-import { Tasks } from './componnets/tasks/tasks';
 
 @Component({
-  selector: 'app-root', // Component directive
-  imports: [Header, User, Tasks],
+  selector: 'app-root',
+  standalone: false,
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
