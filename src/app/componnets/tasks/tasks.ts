@@ -1,9 +1,8 @@
-import { Component, computed, input, Input, signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Task } from './task/task';
 import { DUMMY_USERS } from '../user/dummy-users';
-import { dummyTasks } from './dummy-tasks';
 import { NewTask } from './new-task/new-task';
-import { TaskInput } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -13,28 +12,20 @@ import { TaskInput } from './task/task.model';
 })
 export class Tasks {
   userName = input.required<string>();
-  signalDummyTasks = signal(dummyTasks);
-  newTaskDialog = false;
+  newTaskDialog = false; // can use signal(false) for this as well, but we will keep it simple for now.
+
+  constructor(private tasksService: TasksService) {}
 
   userId = computed(() => {
-    return DUMMY_USERS.find(user => user.name === this.userName())!.id;
+    return DUMMY_USERS.find((user) => user.name === this.userName())!.id;
   });
 
   selectedUserTasks = computed(() => {
-    return this.signalDummyTasks().filter(task => task.userId === this.userId());
+    return this.tasksService.getUsersTasks(this.userId());
   });
-
-  onCompleteTask(taskId: string) {
-    this.signalDummyTasks.set(this.signalDummyTasks().filter(task => task.id !== taskId));
-  }
 
   showTaskDialog() {
     this.newTaskDialog = true;
-  }
-
-  saveNewTask(task: TaskInput) {
-    this.signalDummyTasks.update(tasks => [...tasks, task]);
-    this.newTaskDialog = false;
   }
 
   closeNewTaskModal() {

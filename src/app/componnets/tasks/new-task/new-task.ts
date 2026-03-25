@@ -1,7 +1,7 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { dummyTasks } from '../dummy-tasks';
 import { TaskInput } from '../task/task.model';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-new-task',
@@ -11,15 +11,15 @@ import { TaskInput } from '../task/task.model';
 })
 export class NewTask {
   userId = input.required<string>();
-  cancelTask = output<void>();
-  submitTask = output<TaskInput>();
+  closeTask = output<void>();
 
   enteredTitle = '';
   enteredSummary = '';
   enteredDueDate = '';
 
-  onCancel() {
-    this.cancelTask.emit();
+  private tasksService = inject(TasksService); // Injecting the TasksService. Alternatively, we could have used the constructor for injection.
+  close() {
+    this.closeTask.emit();
   }
 
   onSubmit() {
@@ -28,10 +28,11 @@ export class NewTask {
       userId: this.userId(),
       title: this.enteredTitle,
       dueDate: this.enteredDueDate,
-      summary: this.enteredSummary
+      summary: this.enteredSummary,
     };
     // console.log('New Task Object:', newTask);
-    
-    this.submitTask.emit(newTask);
+
+    this.tasksService.saveNewTask(newTask);
+    this.closeTask.emit();
   }
 }

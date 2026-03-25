@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "first-app": {
+    "essentials": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -24,9 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -56,10 +54,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "first-app:build:production"
+              "buildTarget": "essentials:build:production"
             },
             "development": {
-              "buildTarget": "first-app:build:development"
+              "buildTarget": "essentials:build:development"
             }
           },
           "defaultConfiguration": "development"

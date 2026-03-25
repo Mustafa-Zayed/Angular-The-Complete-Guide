@@ -1,9 +1,5 @@
 @if (newTaskDialog) {
-  <app-new-task
-    [userId]="userId()"
-    (submitTask)="saveNewTask($event)"
-    (cancelTask)="closeNewTaskModal()"
-  />
+  <app-new-task [userId]="userId()" (closeTask)="closeNewTaskModal()" />
 }
 
 <section id="tasks">
@@ -17,7 +13,7 @@
   <ul>
     @for (task of selectedUserTasks(); track $index) {
       <li>
-        <app-task [task]="task" (taskComplete)="onCompleteTask($event)" />
+        <app-task [task]="task" />
       </li>
     }
   </ul>

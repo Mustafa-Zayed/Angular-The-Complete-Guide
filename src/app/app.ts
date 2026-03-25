@@ -8,16 +8,16 @@ import { Tasks } from './componnets/tasks/tasks';
   selector: 'app-root', // Component directive
   imports: [Header, User, Tasks],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('first-app');
+  protected readonly title = signal('essentials');
   dummyUsers = DUMMY_USERS;
-  userName? : string;
-  selectedUserId? : string;
+  userName?: string;
+  selectedUserId?: string;
 
   onUserSelected(userId: string) {
-    const userName = this.dummyUsers.find(user => user.id === userId)?.name; // This will find the user with the matching id and return their name. The ?. is the optional chaining operator, which will return undefined if no user is found with the matching id instead of throwing an error.
+    const userName = this.dummyUsers.find((user) => user.id === userId)?.name; // This will find the user with the matching id and return their name. The ?. is the optional chaining operator, which will return undefined if no user is found with the matching id instead of throwing an error.
     this.userName = userName;
     this.selectedUserId = userId;
   }
