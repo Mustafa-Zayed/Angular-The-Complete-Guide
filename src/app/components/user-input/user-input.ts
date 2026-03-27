@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import type { InvestmentInput } from '../../models/investment-input.model';
+import { InvestmentService } from '../../services/investment.service';
 
 @Component({
   selector: 'app-user-input',
@@ -9,20 +9,26 @@ import type { InvestmentInput } from '../../models/investment-input.model';
   styleUrl: './user-input.css',
 })
 export class UserInput {
-  enteredInitialInvestment = '0';
-  enteredAnnualInvestment = '0';
-  enteredExpectedReturn = '5';
-  enteredDuration = '10';
+  enteredInitialInvestment = signal('0');
+  enteredAnnualInvestment = signal('0');
+  enteredExpectedReturn = signal('5');
+  enteredDuration = signal('10');
 
-  @Output() calculate = new EventEmitter<InvestmentInput>();
+  // constructor(private investmentService: InvestmentService) {}
+  private investmentService = inject(InvestmentService);
 
   onSubmit() {
-    const data: InvestmentInput = {
-      initialInvestment: parseFloat(this.enteredInitialInvestment),
-      annualInvestment: parseFloat(this.enteredAnnualInvestment),
-      expectedReturn: parseFloat(this.enteredExpectedReturn),
-      duration: parseFloat(this.enteredDuration),
-    };
-    this.calculate.emit(data);
+    this.investmentService.calculateInvestmentResults({
+      initialInvestment: parseFloat(this.enteredInitialInvestment()),
+      annualInvestment: parseFloat(this.enteredAnnualInvestment()),
+      expectedReturn: parseFloat(this.enteredExpectedReturn()),
+      duration: parseFloat(this.enteredDuration()),
+    });
+
+    // reset form values after submission
+    this.enteredInitialInvestment.set('0');
+    this.enteredAnnualInvestment.set('0');
+    this.enteredExpectedReturn.set('5');
+    this.enteredDuration.set('10');
   }
 }
