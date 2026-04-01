@@ -1,5 +1,19 @@
 <app-dashboard-item [image]="image" [title]="title">
+  <div>
+    <ul>
+      @for (tck of tickets; track $index) {
+        <li>
+          <app-ticket [ticket]="tck" (onMarkAsCompleted)="onMarkAsCompleted(tck.id)" />
+          <!-- - {{ $index }} - {{ $count }} - {{ $first }} - {{ $last }} - {{ $even }} -
+          {{ $odd }} -->
+        </li>
+      } @empty {
+        <p>No tickets avilable.</p>
+      }
+    </ul>
+  </div>
+
   <div id="new-ticket">
-    <app-new-ticket></app-new-ticket>
+    <app-new-ticket (addTck)="onTicketSubmit($event)" />
   </div>
 </app-dashboard-item>
