@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Task, TaskStatus } from '../components/tasks/task.model';
+import { LoggingService } from './logging.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,7 @@ export class TasksService {
   private tasks = signal<Task[]>(
     localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')!) : [],
   );
+  private loggingService = inject(LoggingService);
 
   get tasks$() {
     return this.tasks.asReadonly();
@@ -22,6 +24,7 @@ export class TasksService {
     };
     this.tasks.update((tasks) => [...tasks, newTask]);
     this.saveTasksToLocalStorage();
+    this.loggingService.log('ADDED TASK WITH TITLE ' + taskData.title);
   }
 
   updateTaskStatus(taskId: string, newStatus: TaskStatus) {
@@ -29,6 +32,7 @@ export class TasksService {
       tasks.map((task) => (task.id === taskId ? { ...task, status: newStatus } : task)),
     );
     this.saveTasksToLocalStorage();
+    this.loggingService.log('CHANGE TASK STATUS TO ' + newStatus);
   }
 
   private saveTasksToLocalStorage() {

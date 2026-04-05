@@ -1,12 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/components/app.component';
 import { TasksService } from './app/services/tasks.service';
+// import { InjectionToken } from '@angular/core';
 
 bootstrapApplication(AppComponent).catch((err) => console.error(err));
 
-// bootstrapApplication(AppComponent, {
-//   providers: [TasksService],
-// }).catch((err) => console.error(err));
+// export const TasksServiceToken = new InjectionToken<TasksService>('TasksService');
+
+bootstrapApplication(AppComponent, {
+  // providers: [{ provide: TasksServiceToken, useClass: TasksService }],
+  providers: [TasksService],
+}).catch((err) => console.error(err));
 
 // providers: [TasksService] is equal to this:
 // @Injectable({
