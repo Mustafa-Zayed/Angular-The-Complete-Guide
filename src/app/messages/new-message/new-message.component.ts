@@ -8,11 +8,13 @@ import { MessagesService } from '../messages.service';
   imports: [FormsModule],
   templateUrl: './new-message.component.html',
   styleUrl: './new-message.component.css',
+  // Using OnPush here to demonstrate that this component or its children will only re-render when its
+  // inputs, signals or events are changed or emitted, not for every change detection cycle.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewMessageComponent {
   private messageService = inject(MessagesService);
-  enteredText = '';
+  enteredText = signal('');
 
   get debugOutput() {
     console.log('[NewMessage] "debugOutput" binding re-evaluated.');
@@ -20,7 +22,7 @@ export class NewMessageComponent {
   }
 
   onSubmit() {
-    this.messageService.addMessage(this.enteredText);
-    this.enteredText = '';
+    this.messageService.addMessage(this.enteredText());
+    this.enteredText.set('');
   }
 }

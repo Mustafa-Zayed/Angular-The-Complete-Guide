@@ -1,5 +1,6 @@
 <ul>
-  @for (message of messages; track message) {
+  <!-- messages | async -->
+  @for (message of messages(); track message) {
     <li>{{ message }}</li>
   }
 </ul>

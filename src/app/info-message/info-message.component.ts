@@ -6,6 +6,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
   templateUrl: './info-message.component.html',
   styleUrl: './info-message.component.css',
+  // Using OnPush here to demonstrate that this component or its children will only re-render when its
+  // inputs, signals or events are changed or emitted, not for every change detection cycle.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoMessageComponent {

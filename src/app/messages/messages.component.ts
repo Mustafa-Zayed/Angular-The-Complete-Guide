@@ -10,7 +10,7 @@ import { NewMessageComponent } from './new-message/new-message.component';
   styleUrl: './messages.component.css',
   imports: [MessagesListComponent, NewMessageComponent],
   // Using OnPush here to demonstrate that this component or its children will only re-render when its
-  // inputs, signals or events are changed or emitted.
+  // inputs, signals or events are changed or emitted, not for every change detection cycle.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessagesComponent {
