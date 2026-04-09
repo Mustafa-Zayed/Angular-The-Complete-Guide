@@ -37,6 +37,14 @@ export class UserPlacesComponent {
     this.subscriptions.push(sub);
   }
 
+  onSelectPlace(selectedPlace: Place) {
+    const sub = this.placesService.removeUserPlace(selectedPlace).subscribe((response) => {
+      console.log(response.userPlaces);
+    });
+
+    this.subscriptions.push(sub);
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
