@@ -39,7 +39,7 @@ export class AvailablePlacesComponent {
   }
 
   onSelectPlace(selectedPlace: Place) {
-    const sub = this.placesService.addPlaceToUserPlaces(selectedPlace.id).subscribe((response) => {
+    const sub = this.placesService.addPlaceToUserPlaces(selectedPlace).subscribe((response) => {
       console.log(response);
     });
 

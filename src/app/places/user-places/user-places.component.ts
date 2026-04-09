@@ -14,19 +14,20 @@ import { PlacesService } from '../places.service';
   imports: [PlacesContainerComponent, PlacesComponent],
 })
 export class UserPlacesComponent {
-  places = signal<Place[] | undefined>(undefined);
   private placesService = inject(PlacesService);
   private subscriptions: Subscription[] = [];
   isFetching = signal(false);
   error = signal('');
+  places = this.placesService.loadedUserPlaces;
 
   ngOnInit() {
     this.isFetching.set(true);
 
     const sub = this.placesService.loadUserPlaces().subscribe({
-      next: (places) => {
-        this.places.set(places);
-      },
+      // We implement the next handler using tap operator in PlacesService
+      // next: (places) => {
+      //   this.places.set(places);
+      // },
       error: (error: Error) => {
         this.error.set(error.message);
       },
