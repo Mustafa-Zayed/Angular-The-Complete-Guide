@@ -1,24 +1,15 @@
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { of } from 'rxjs';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { emailIsUnique, mustContainQuestionMark } from './custom-validators';
+import { debounceTime } from 'rxjs';
 
-function mustContainQuestionMark(control: AbstractControl) {
-  if (control.value.includes('?')) return null;
+let initialEmail = '';
+const savedLoginForm = localStorage.getItem('saved-login-form');
 
-  return { doesNotContainQuestionMark: true };
-}
-
-function emailIsUnique(control: AbstractControl) {
-  if (control.value !== 'test@example.com') return of(null);
-
-  return of({ notUnique: true });
+if (savedLoginForm) {
+  const loadedFormData = JSON.parse(savedLoginForm);
+  initialEmail = loadedFormData.email;
 }
 
 @Component({
@@ -27,9 +18,9 @@ function emailIsUnique(control: AbstractControl) {
   styleUrls: ['./login-reactive.component.css'],
   imports: [ReactiveFormsModule, JsonPipe],
 })
-export class LoginReactiveComponent {
+export class LoginReactiveComponent implements OnInit {
   myForm = new FormGroup({
-    email: new FormControl('', {
+    email: new FormControl(initialEmail, {
       validators: [Validators.required, Validators.email],
       asyncValidators: [emailIsUnique],
     }),
@@ -37,6 +28,37 @@ export class LoginReactiveComponent {
       validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark],
     }),
   });
+
+  destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    // Because we are using reactive forms and doing all the work in the TS, we can egt the initial value
+    // outside of the component.
+    // // read from local storage
+    // const savedLoginForm = localStorage.getItem('saved-login-form');
+
+    // if (savedLoginForm) {
+    //   const loadedFormData = JSON.parse(savedLoginForm);
+    //   const savedEmail = loadedFormData.email;
+
+    //   // this.myForm.controls.email.setValue(savedEmail);
+    //   this.myForm.patchValue({
+    //     email: savedEmail,
+    //   });
+    // }
+
+    // save to local storage
+    const subscription = this.myForm.valueChanges.pipe(debounceTime(500)).subscribe((changes) =>
+      localStorage.setItem(
+        'saved-login-form',
+        JSON.stringify({
+          email: changes.email,
+        }),
+      ),
+    );
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
 
   get emailIsInvalid() {
     return (
