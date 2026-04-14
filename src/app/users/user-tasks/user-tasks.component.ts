@@ -1,12 +1,13 @@
-import { Component, computed, DestroyRef, inject, Input, input, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { UsersService } from '../users.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-tasks',
   standalone: true,
   templateUrl: './user-tasks.component.html',
   styleUrl: './user-tasks.component.css',
+  imports: [RouterOutlet, RouterLink],
 })
 export class UserTasksComponent implements OnInit {
   // @Input({ required: true }) userId!: string;
