@@ -1,0 +1,42 @@
+<main>
+  <app-learning-resources />
+
+  <hr />
+
+  <app-auth />
+
+  <!-- @if (isAdmin()) {
+    <p>Only admins can see this.</p>
+  } -->
+
+  <!-- Using ElementRef -->
+  <!-- <p appAuth="admin">Only admins can see this.</p>
+  <p appAuth="user">Only users can see this.</p>
+  <p appAuth="guest">Only guests can see this.</p> -->
+
+  <!-- Using TemplateRef & ViewContainerRef -->
+  <!-- <ng-template appAuth="admin">
+    <p>Only admins can see this.</p>
+  </ng-template>
+
+  <ng-template appAuth="user">
+    <p>Only users can see this.</p>
+  </ng-template>
+
+  <ng-template appAuth="guest">
+    <p>Only guests can see this.</p>
+  </ng-template> -->
+
+  <!-- We can also use TemplateRef & ViewContainerRef, but without ng-template.
+  The sign of the asterisk * :
+    - Under the hood creates ng-template, so we don't need to use ng-template.
+    - Also, it sets up property binding -->
+
+  <p *appAuth="'admin'" appLog class="protected-content admin">Only admins should see this!</p>
+  <p *appAuth="'user'" appLog class="protected-content unauthenticated">
+    Regular users should see this!
+  </p>
+  <p *appAuth="'guest'" appLog class="protected-content authenticated">
+    Guest users should see this!
+  </p>
+</main>
