@@ -1,8 +1,15 @@
 import { Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  RouterLink,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 import { TaskComponent } from './task/task.component';
 import { TasksService } from './tasks.service';
+import { Task } from './task/task.model';
 
 @Component({
   selector: 'app-tasks',
@@ -13,11 +20,13 @@ import { TasksService } from './tasks.service';
 })
 export class TasksComponent {
   userId = input.required<string>(); // extracted from parent route
+  // order = input<'asc' | 'desc'>(); // extracted from query param with help of withComponentInputBinding() in app.config file.
+  // userTasks = input.required<Task[]>();
 
   private tasksService = inject(TasksService);
   private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
-  // order = input<'asc' | 'desc'>(); // extracted from query param with help of withComponentInputBinding() in app.config file.
+
   order = signal('asc');
   userTasks = computed(() =>
     this.tasksService
@@ -42,3 +51,22 @@ export class TasksComponent {
     });
   }
 }
+
+// export const resolveUserTasks: ResolveFn<Task[]> = (
+//   activatedRouteSnapshot: ActivatedRouteSnapshot,
+//   routerState: RouterStateSnapshot,
+// ) => {
+//   const tasksService = inject(TasksService);
+//   const order = activatedRouteSnapshot.queryParams['order'];
+//   const tasks = tasksService
+//     .allTasks()
+//     .filter((task) => task.userId === activatedRouteSnapshot.params['userId'])
+//     .sort((a, b) => {
+//       if (order === 'asc') {
+//         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+//       } else {
+//         return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
+//       }
+//     });
+//   return tasks.length > 0 ? tasks : [];
+// };
