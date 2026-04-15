@@ -1,0 +1,23 @@
+<form (ngSubmit)="onSubmit(titleInput.value, requestTextarea.value)" #form>
+  <app-control label="Title">
+    <!-- #titleInput is a template variable -->
+    <input name="title" id="title" #titleInput #input />
+  </app-control>
+
+  <!-- #ctrl is a template variable that points to a component instance of the host element, 
+  Control component -->
+  <app-control label="Request" #ctrl>
+    <!-- #requestTextarea is a template variable -->
+    <textarea name="request" id="request" rows="3" #requestTextarea #input></textarea>
+  </app-control>
+
+  <p>
+    <!-- #btn is a template variable that points to a component instance of the host
+    element which is the Button component, not the button element itself, HTMLButtonElement -->
+    <button appButton #btn>
+      Submit
+      <span icon> ⌲ </span>
+      <!-- <span ngProjectAs="icon"> ⌲ </span> -->
+    </button>
+  </p>
+</form>
